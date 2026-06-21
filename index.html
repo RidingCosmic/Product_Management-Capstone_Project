@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Solar-R-Us — Product Management Capstone Case Study</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --teal-deep:#1B3A4B;
+    --orange:#FF8C42;
+    --paper:#F7F3EB;
+    --ink:#2D2A26;
+    --water:#0E7C7B;
+    --card:#FFFFFF;
+    --line:rgba(45,42,38,0.12);
+    --muted:#6b6358;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{
+    font-family:'Source Serif 4',serif;
+    font-weight:700;
+    margin:0;
+    color:var(--teal-deep);
+  }
+  .mono{font-family:'JetBrains Mono',monospace;}
+  a{color:var(--water);}
+
+  /* Skip link */
+  .skip-link{position:absolute; left:-999px; top:0; background:var(--teal-deep); color:#fff; padding:10px 16px; z-index:100;}
+  .skip-link:focus{left:10px; top:10px;}
+
+  /* Horizon divider — signature element */
+  .horizon{
+    height:3px;
+    margin:0 auto;
+    max-width:1100px;
+    background:linear-gradient(90deg, transparent 0%, var(--orange) 20%, var(--water) 80%, transparent 100%);
+    border-radius:2px;
+  }
+  .horizon-wrap{padding:56px 24px;}
+
+  .wrap{max-width:1100px; margin:0 auto; padding:0 24px;}
+  .narrow{max-width:760px; margin:0 auto; padding:0 24px;}
+
+  /* Hero */
+  .hero{
+    background:
+      radial-gradient(ellipse at 70% 20%, rgba(255,140,66,0.18), transparent 55%),
+      radial-gradient(ellipse at 20% 80%, rgba(14,124,123,0.16), transparent 55%),
+      var(--teal-deep);
+    color:#fff;
+    padding:120px 24px 90px;
+    position:relative;
+    overflow:hidden;
+  }
+  .hero::after{
+    content:"";
+    position:absolute; left:0; right:0; bottom:0; height:120px;
+    background:linear-gradient(180deg, transparent, var(--paper));
+  }
+  .hero-inner{max-width:1100px; margin:0 auto; position:relative; z-index:2;}
+  .eyebrow{
+    font-family:'JetBrains Mono',monospace;
+    font-size:13px;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:var(--orange);
+    margin-bottom:18px;
+    display:inline-block;
+  }
+  .hero h1{
+    color:#fff;
+    font-size:clamp(34px, 6vw, 58px);
+    line-height:1.08;
+    max-width:780px;
+  }
+  .hero p.lede{
+    margin-top:22px;
+    font-size:19px;
+    color:rgba(255,255,255,0.82);
+    max-width:600px;
+    font-family:'Inter',sans-serif;
+  }
+  .disclaimer-pill{
+    margin-top:32px;
+    display:inline-flex;
+    align-items:flex-start;
+    gap:10px;
+    background:rgba(255,255,255,0.08);
+    border:1px solid rgba(255,255,255,0.18);
+    border-radius:10px;
+    padding:14px 18px;
+    font-size:14px;
+    color:rgba(255,255,255,0.78);
+    max-width:600px;
+  }
+
+  /* Sections */
+  section{padding:0 24px 90px;}
+  .section-head{margin-bottom:34px;}
+  .section-num{
+    font-family:'JetBrains Mono',monospace;
+    color:var(--orange);
+    font-size:14px;
+    letter-spacing:0.05em;
+    display:block;
+    margin-bottom:10px;
+  }
+  .section-head h2{font-size:clamp(26px,4vw,36px);}
+  .section-head p.sub{color:var(--muted); margin-top:10px; font-size:17px; max-width:680px;}
+
+  /* Voice note callouts */
+  .voice{
+    border-left:3px solid var(--orange);
+    background:#fff8ef;
+    padding:18px 22px;
+    border-radius:0 8px 8px 0;
+    margin:24px 0;
+    font-size:16px;
+  }
+  .voice .voice-label{
+    font-family:'JetBrains Mono',monospace;
+    font-size:12px;
+    text-transform:uppercase;
+    letter-spacing:0.06em;
+    color:var(--orange);
+    display:block;
+    margin-bottom:6px;
+  }
+
+  /* Cards */
+  .card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:26px;
+  }
+  .grid-2{display:grid; grid-template-columns:1fr 1fr; gap:20px;}
+  .grid-3{display:grid; grid-template-columns:repeat(3,1fr); gap:20px;}
+  @media(max-width:760px){ .grid-2,.grid-3{grid-template-columns:1fr;} }
+
+  .card h3{font-size:18px; margin-bottom:10px;}
+  .card p{margin:0; color:var(--ink); font-size:15px;}
+  .tag{
+    display:inline-block;
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:0.05em;
+    background:rgba(14,124,123,0.1);
+    color:var(--water);
+    padding:4px 9px;
+    border-radius:5px;
+    margin-bottom:12px;
+  }
+
+  ul.plain{margin:14px 0 0; padding-left:20px;}
+  ul.plain li{margin-bottom:8px;}
+
+  /* Stat row */
+  .stats{display:grid; grid-template-columns:repeat(4,1fr); gap:18px; margin-top:10px;}
+  @media(max-width:760px){.stats{grid-template-columns:repeat(2,1fr);}}
+  .stat{background:#fff; border:1px solid var(--line); border-radius:12px; padding:20px;}
+  .stat .num{font-family:'Source Serif 4',serif; font-weight:700; font-size:30px; color:var(--teal-deep);}
+  .stat .label{font-size:13px; color:var(--muted); margin-top:4px;}
+
+  /* Chart blocks */
+  .chart-card{background:#fff; border:1px solid var(--line); border-radius:12px; padding:24px;}
+  .chart-title{font-size:15px; font-weight:600; margin-bottom:4px; color:var(--teal-deep);}
+  .chart-sub{font-size:13px; color:var(--muted); margin-bottom:18px;}
+
+  /* bar chart css */
+  .bars{display:flex; align-items:flex-end; gap:14px; height:220px; padding-top:10px;}
+  .bar-col{flex:1; display:flex; flex-direction:column; align-items:center; justify-content:flex-end; height:100%;}
+  .bar{
+    width:100%;
+    max-width:54px;
+    border-radius:6px 6px 0 0;
+    background:linear-gradient(180deg, var(--orange), #e76f2c);
+    position:relative;
+  }
+  .bar.alt{background:linear-gradient(180deg, var(--water), #0a5b5a);}
+  .bar-val{
+    font-family:'JetBrains Mono',monospace;
+    font-size:12px;
+    margin-bottom:6px;
+    color:var(--ink);
+  }
+  .bar-label{font-size:12px; color:var(--muted); margin-top:8px; text-align:center;}
+
+  /* line growth chart (svg) */
+  .legend{display:flex; gap:18px; margin-top:14px; font-size:12px; color:var(--muted);}
+  .legend span{display:inline-flex; align-items:center; gap:6px;}
+  .dot{width:9px; height:9px; border-radius:50%; display:inline-block;}
+
+  table{width:100%; border-collapse:collapse; font-size:14px;}
+  th,td{text-align:left; padding:10px 12px; border-bottom:1px solid var(--line);}
+  th{font-family:'JetBrains Mono',monospace; font-size:12px; text-transform:uppercase; letter-spacing:0.04em; color:var(--muted); font-weight:500;}
+
+  .doc-list{display:grid; gap:14px; margin-top:10px;}
+  .doc-row{
+    display:flex; align-items:center; justify-content:space-between;
+    background:#fff; border:1px solid var(--line); border-radius:10px;
+    padding:16px 20px;
+  }
+  .doc-row .name{font-weight:600; color:var(--teal-deep);}
+  .doc-row .desc{font-size:13px; color:var(--muted); margin-top:2px;}
+  .badge{
+    font-family:'JetBrains Mono',monospace; font-size:11px;
+    background:var(--paper); border:1px solid var(--line);
+    padding:5px 10px; border-radius:6px; color:var(--ink); white-space:nowrap;
+  }
+
+  footer{
+    background:var(--teal-deep); color:rgba(255,255,255,0.7);
+    padding:50px 24px; text-align:center; font-size:14px;
+  }
+  footer a{color:var(--orange);}
+
+  .acc{color:var(--orange);}
+  .acc-w{color:var(--water);}
+
+  /* timeline */
+  .tl{position:relative; padding-left:28px; margin-top:18px;}
+  .tl::before{content:""; position:absolute; left:6px; top:4px; bottom:4px; width:2px; background:linear-gradient(180deg, var(--orange), var(--water));}
+  .tl-item{position:relative; margin-bottom:22px;}
+  .tl-item::before{content:""; position:absolute; left:-28px; top:4px; width:11px; height:11px; border-radius:50%; background:var(--orange); border:2px solid #fff; box-shadow:0 0 0 2px var(--orange);}
+  .tl-item h4{margin:0 0 4px; font-size:15px; color:var(--teal-deep); font-family:'Inter',sans-serif; font-weight:600;}
+  .tl-item p{margin:0; font-size:14px; color:var(--muted);}
+
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+  }
+</style>
+</head>
+<body>
+<a href="#main" class="skip-link">Skip to content</a>
+
+<!-- ============ HERO ============ -->
+<header class="hero">
+  <div class="hero-inner">
+    <span class="eyebrow">Product Management Case Study</span>
+    <h1>How I'd take a solar water heater from idea to launch</h1>
+    <p class="lede">A full product management walkthrough for Solar-R-Us, built end to end: market problem, concept, vision, user stories, beta testing, and demand generation.</p>
+    <div class="disclaimer-pill">
+      ⚠️ This case study is based on a fictional company, Solar-R-Us (SRU), used as the scenario for a Coursera Product Management Capstone Project. The company and product are not real. The work product, structure, and thinking are mine.
+    </div>
+  </div>
+</header>
+
+<main id="main">
+
+<!-- ============ SECTION 1: INTRO ============ -->
+<section class="wrap" style="padding-top:80px;">
+  <div class="section-head">
+    <span class="section-num">01 / Intro</span>
+    <h2>What this case study is</h2>
+    <p class="sub">A breakdown of the full product management lifecycle, applied to one product, start to almost-finish.</p>
+  </div>
+
+  <div class="voice">
+    <span class="voice-label">In my own words</span>
+    I wanted a project where I touch every phase a PM actually deals with, not just the fun parts. Concept, requirements, beta testing, going to market, even retiring an old product. So I picked this capstone scenario and built it out properly, like I would for a real product.
+  </div>
+
+  <p>The product is a commercial solar water heating system. The company is Solar-R-Us. Through the case I worked as the product manager, taking the idea from a rough market opportunity all the way through a beta test and into a demand generation plan for launch.</p>
+
+  <p>Below you'll find the actual documents I produced along the way. Some are summarized here, the full versions are linked at the bottom of each section.</p>
+</section>
+
+<div class="horizon-wrap"><div class="horizon"></div></div>
+
+<!-- ============ SECTION 2: ABOUT THE COMPANY ============ -->
+<section class="wrap">
+  <div class="section-head">
+    <span class="section-num">02 / The Company</span>
+    <h2>About Solar-R-Us (SRU)</h2>
+  </div>
+
+  <div class="disclaimer-pill" style="background:rgba(27,58,75,0.06); border-color:var(--line); color:var(--muted);">
+    📌 Disclaimer: Solar-R-Us LLC is a fictional company created for the Coursera Product Management Specialization capstone project. All scenario details, financials, and customer information below come from the course materials, not a real business.
+  </div>
+
+  <div class="grid-2" style="margin-top:24px;">
+    <div class="card">
+      <span class="tag">Who they are</span>
+      <h3>A solar products company based in the U.S.</h3>
+      <p>SRU produces a range of solar-powered products: water heating systems, pool heating systems, and solar powered heaters, for both commercial and residential use. They sell direct through their website and through retail partners like Amazon, Home Depot, Lowe's, Walmart, and Costco.</p>
+    </div>
+    <div class="card">
+      <span class="tag">The problem they're solving</span>
+      <h3>Energy costs are going up, and the world wants cleaner heat</h3>
+      <p>Conventional water heating is getting more expensive and less acceptable as regulations tighten. SRU's bet is a system that's cheaper to run, easier to manage, and friendlier to the environment than what's already out there.</p>
+    </div>
+  </div>
+</section>
+
+<div class="horizon-wrap"><div class="horizon"></div></div>
+
+<!-- ============ SECTION 3: MARKET OPPORTUNITY (chart) ============ -->
+<section class="wrap">
+  <div class="section-head">
+    <span class="section-num">03 / Market Opportunity</span>
+    <h2>The market is real, and it's growing</h2>
+    <p class="sub">This isn't a niche bet. Solar water heating has steady, global tailwinds.</p>
+  </div>
+
+  <div class="voice">
+    <span class="voice-label">In my own words</span>
+    I didn't want to just say "the market is big," I wanted to show it. So here's the growth curve I pulled together from the course material.
+  </div>
+
+  <div class="chart-card">
+    <div class="chart-title">Global Solar Water Heater Market Size</div>
+    <div class="chart-sub">USD billions, 2023 projected to 2032, at an 8.5% CAGR</div>
+    <svg viewBox="0 0 640 220" width="100%" height="220" role="img" aria-label="Line chart showing market growth from 4.01 billion dollars in 2023 to 7.71 billion dollars in 2032">
+      <line x1="40" y1="180" x2="620" y2="180" stroke="rgba(45,42,38,0.2)" stroke-width="1"/>
+      <line x1="40" y1="20" x2="40" y2="180" stroke="rgba(45,42,38,0.2)" stroke-width="1"/>
+      <polyline points="40,160 240,140 440,90 620,30" fill="none" stroke="#FF8C42" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="40" cy="160" r="5" fill="#FF8C42"/>
+      <circle cx="240" cy="140" r="5" fill="#FF8C42"/>
+      <circle cx="440" cy="90" r="5" fill="#FF8C42"/>
+      <circle cx="620" cy="30" r="5" fill="#FF8C42"/>
+      <text x="40" y="145" font-family="JetBrains Mono, monospace" font-size="12" fill="#2D2A26">$4.01B</text>
+      <text x="220" y="125" font-family="JetBrains Mono, monospace" font-size="12" fill="#2D2A26">~$5.3B</text>
+      <text x="420" y="75" font-family="JetBrains Mono, monospace" font-size="12" fill="#2D2A26">~$6.6B</text>
+      <text x="560" y="20" font-family="JetBrains Mono, monospace" font-size="12" fill="#2D2A26">$7.71B</text>
+      <text x="32" y="198" font-family="Inter" font-size="12" fill="#6b6358">2023</text>
+      <text x="225" y="198" font-family="Inter" font-size="12" fill="#6b6358">2026</text>
+      <text x="425" y="198" font-family="Inter" font-size="12" fill="#6b6358">2029</text>
+      <text x="595" y="198" font-family="Inter" font-size="12" fill="#6b6358">2032</text>
+    </svg>
+  </div>
+
+  <div class="stats" style="margin-top:24px;">
+    <div class="stat"><div class="num">8.5%</div><div class="label">Projected CAGR, 2023–2032</div></div>
+    <div class="stat"><div class="num">50–80%</div><div class="label">Potential heating bill savings</div></div>
+    <div class="stat"><div class="num">3–6 yrs</div><div class="label">Typical payback period</div></div>
+    <div class="stat"><div class="num">20%</div><div class="label">SRU's target market share growth</div></div>
+  </div>
+</section>
+
+<div class="horizon-wrap"><div class="horizon"></div></div>
+
+<!-- ============ SECTION 4: PRODUCT CONCEPT ============ -->
+<section class="wrap">
+  <div class="section-head">
+    <span class="section-num">04 / Product Concept</span>
+    <h2>What the product actually is</h2>
+    <p class="sub">Two collector options, three storage options, and a companion app that makes the whole thing feel modern.</p>
+  </div>
+
+  <div class="grid-3">
+    <div class="card">
+      <span class="tag">Collector</span>
+      <h3>Evacuated Tube</h3>
+      <p>Vacuum-sealed tubes, high efficiency, more reliable, but a bit more to build.</p>
+    </div>
+    <div class="card">
+      <span class="tag">Collector</span>
+      <h3>Flat Plate</h3>
+      <p>Simpler design, cheaper to make, good entry option for cost-sensitive buyers.</p>
+    </div>
+    <div class="card">
+      <span class="tag">Smart layer</span>
+      <h3>Monitoring App</h3>
+      <p>Real-time monitoring, fault alerts, remote configuration. Free for Apple and Android.</p>
+    </div>
+  </div>
+
+  <div class="voice" style="margin-top:24px;">
+    <span class="voice-label">In my own words</span>
+    Honestly the hardware part is straightforward, lots of companies sell tubes and tanks. The differentiator is the app. Customers want to see what's happening with their system without calling someone. That's the part I leaned into when writing the requirements.
+  </div>
+
+  <div class="doc-list">
+    <div class="doc-row">
+      <div>
+        <div class="name">Product Concept Document</div>
+        <div class="desc">Market problem, segments, financials, competitive landscape, differentiators</div>
+      </div>
+      <span class="badge">.docx</span>
+    </div>
+    <div class="doc-row">
+      <div>
+        <div class="name">Product Vision Document</div>
+        <div class="desc">Audience, problem, category, reason to buy, differentiation, value proposition</div>
+      </div>
+      <span class="badge">.docx</span>
+    </div>
+  </div>
+</section>
+
+<div class="horizon-wrap"><div class="horizon"></div></div>
+
+<!-- ============ SECTION 5: FINANCIALS (chart) ============ -->
+<section class="wrap">
+  <div class="section-head">
+    <span class="section-num">05 / Financials</span>
+    <h2>The numbers behind the launch</h2>
+    <p class="sub">Cash flow over the first three years, based on the refined investment model.</p>
+  </div>
+
+  <div class="chart-card">
+    <div class="chart-title">Investment vs. Returns vs. Cash Flow</div>
+    <div class="chart-sub">USD, Initial year through Year 3</div>
+    <div class="bars">
+      <div class="bar-col">
+        <div class="bar-val">$2.5M</div>
+        <div class="bar alt" style="height:62%;"></div>
+        <div class="bar-label">Initial<br>Cash Flow</div>
+      </div>
+      <div class="bar-col">
+        <div class="bar-val">$2.7M</div>
+        <div class="bar alt" style="height:67%;"></div>
+        <div class="bar-label">Year 1<br>Cash Flow</div>
+      </div>
+      <div class="bar-col">
+        <div class="bar-val">$3.25M</div>
+        <div class="bar alt" style="height:81%;"></div>
+        <div class="bar-label">Year 2<br>Cash Flow</div>
+      </div>
+      <div class="bar-col">
+        <div class="bar-val">$2.4M</div>
+        <div class="bar alt" style="height:60%;"></div>
+        <div class="bar-label">Year 3<br>Cash Flow</div>
+      </div>
+      <div class="bar-col">
+        <div class="bar-val">98%</div>
+        <div class="bar" style="height:95%;"></div>
+        <div class="bar-label">IRR</div>
+      </div>
+    </div>
+    <div class="legend">
+      <span><span class="dot" style="background:var(--water);"></span>Cash flow by year</span>
+      <span><span class="dot" style="background:var(--orange);"></span>Internal Rate of Return</span>
+    </div>
+  </div>
+
+  <p style="margin-top:18px;">Net Present Value at 15% discount: <span class="mono acc-w">$3,376,810</span>. Three-year profitability window, with the biggest risks being development delays, supply chain issues, and slower-than-expected adoption.</p>
+</section>
+
+<div class="horizon-wrap"><div class="horizon"></div></div>
+
+<!-- ============ SECTION 6: USER STORIES ============ -->
+<section class="wrap">
+  <div class="section-head">
+    <span class="section-num">06 / Requirements</span>
+    <h2>Turning needs into user stories</h2>
+    <p class="sub">Eleven stories across six epics, each with acceptance criteria, written in standard role / need / value form.</p>
+  </div>
+
+  <div class="voice">
+    <span class="voice-label">In my own words</span>
+    This part took longer than I expected. It's easy to write a story, it's harder to write acceptance criteria that actually mean something and aren't just restating the story.
+  </div>
+
+  <div class="grid-3">
+    <div class="card">
+      <span class="tag">Epic</span>
+      <h3>Real-Time Monitoring</h3>
+      <p>Commercial customers track efficiency and get fault alerts in real time, with automated fixes where possible.</p>
+    </div>
+    <div class="card">
+      <span class="tag">Epic</span>
+      <h3>Residential Console</h3>
+      <p>A wireless console that auto-adjusts collector settings based on weather, no app required.</p>
+    </div>
+    <div class="card">
+      <span class="tag">Epic</span>
+      <h3>Support &amp; Privacy</h3>
+      <p>24/7 help desk link, in-app troubleshooting, and a firm no-third-party-sharing data policy.</p>
+    </div>
+  </div>
+
+  <div class="doc-list" style="margin-top:24px;">
+    <div class="doc-row">
+      <div>
+        <div class="name">User Story Document</div>
+        <div class="desc">11 stories, 6 epics, full acceptance criteria for each</div>
+      </div>
+      <span class="badge">.docx / .pdf</span>
+    </div>
+  </div>
+</section>
+
+<div class="horizon-wrap"><div class="horizon"></div></div>
+
+<!-- ============ SECTION 7: BETA TESTING (chart) ============ -->
+<section class="wrap">
+  <div class="section-head">
+    <span class="section-num">07 / Beta Testing</span>
+    <h2>Validating before launch</h2>
+    <p class="sub">Eight commercial testers, one week to analyze results, two weeks to fix what came up.</p>
+  </div>
+
+  <div class="chart-card">
+    <div class="chart-title">Beta Test Participants by System Size</div>
+    <div class="chart-sub">8 commercial testers total, sourced from SRU's existing partner base</div>
+    <div class="bars" style="height:160px;">
+      <div class="bar-col">
+        <div class="bar-val">3</div>
+        <div class="bar" style="height:60%;"></div>
+        <div class="bar-label">Small<br>System</div>
+      </div>
+      <div class="bar-col">
+        <div class="bar-val">3</div>
+        <div class="bar" style="height:60%;"></div>
+        <div class="bar-label">Moderate<br>System</div>
+      </div>
+      <div class="bar-col">
+        <div class="bar-val">2</div>
+        <div class="bar" style="height:40%;"></div>
+        <div class="bar-label">Large<br>System</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="voice" style="margin-top:24px;">
+    <span class="voice-label">In my own words</span>
+    What I liked about this part of the case is it wasn't perfect. The large system had real issues, the app didn't recognize the configuration, the collector efficiency was lower than planned. That's normal. A beta test that finds nothing wrong probably wasn't testing hard enough.
+  </div>
+
+  <div class="card" style="margin-top:18px;">
+    <h3>What the test actually found</h3>
+    <ul class="plain">
+      <li>Small and moderate systems worked exactly as planned.</li>
+      <li>Large system had a collector efficiency issue, engineering committed to a fix before launch.</li>
+      <li>The app didn't recognize the large system configuration, fix was expedited.</li>
+      <li>Users wanted a downloadable illustrated manual instead of an all-text guide.</li>
+      <li>Overall, users were satisfied and very interested in cost comparisons against competitors.</li>
+    </ul>
+  </div>
+
+  <div class="doc-list" style="margin-top:18px;">
+    <div class="doc-row">
+      <div>
+        <div class="name">Beta Plan</div>
+        <div class="desc">Purpose, roles, participants, venue, schedule, costs, legal — one page</div>
+      </div>
+      <span class="badge">.docx</span>
+    </div>
+  </div>
+</section>
+
+<div class="horizon-wrap"><div class="horizon"></div></div>
+
+<!-- ============ SECTION 8: DEMAND GENERATION ============ -->
+<section class="wrap">
+  <div class="section-head">
+    <span class="section-num">08 / Go to Market</span>
+    <h2>Getting the word out</h2>
+    <p class="sub">A six-month, $280K campaign aimed at doubling SRU's commercial reach.</p>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><div class="num">$280K</div><div class="label">Campaign budget</div></div>
+    <div class="stat"><div class="num">12</div><div class="label">Marketing &amp; sales staff dedicated</div></div>
+    <div class="stat"><div class="num">500+</div><div class="label">Target commercial firms contacted</div></div>
+    <div class="stat"><div class="num">1,500+</div><div class="label">Target website visits, 6 months</div></div>
+  </div>
+
+  <div class="tl" style="margin-top:30px;">
+    <div class="tl-item">
+      <h4>Marketing theme</h4>
+      <p>"Save money and the environment with solar heating." Simple on purpose, not trying to be clever.</p>
+    </div>
+    <div class="tl-item">
+      <h4>Trade events</h4>
+      <p>Intersolar North America (4,500 attendees) and the Clean Power Conference and Exhibition.</p>
+    </div>
+    <div class="tl-item">
+      <h4>Influencer outreach</h4>
+      <p>Nico Johnson (Sun Cast podcast), Jigar Shah (Generate Capital), Yann Brandt (energy entrepreneur advocate).</p>
+    </div>
+    <div class="tl-item">
+      <h4>Collateral</h4>
+      <p>10,000 each of brochures, sell sheets, and fact sheets, plus an ROI calculator for live demos.</p>
+    </div>
+  </div>
+
+  <div class="voice" style="margin-top:24px;">
+    <span class="voice-label">In my own words</span>
+    One thing I learned writing this part: the Marketing Director owns this end to end, not the Product Manager. I used to assume PM owned everything close to launch. PM sets the strategy and the product truth, marketing runs the actual campaign. Worth remembering.
+  </div>
+
+  <div class="doc-list">
+    <div class="doc-row">
+      <div>
+        <div class="name">Demand Generation Plan</div>
+        <div class="desc">Objective, trends, theme, segment, collateral, schedule, influencers, metrics, owner</div>
+      </div>
+      <span class="badge">.docx</span>
+    </div>
+  </div>
+</section>
+
+<div class="horizon-wrap"><div class="horizon"></div></div>
+
+<!-- ============ SECTION 9: REFLECTION ============ -->
+<section class="wrap">
+  <div class="section-head">
+    <span class="section-num">09 / Reflection</span>
+    <h2>What I'd take from this</h2>
+  </div>
+
+  <div class="voice">
+    <span class="voice-label">In my own words</span>
+    The biggest thing this case reinforced for me is that product management isn't one skill, it's switching hats constantly. Concept work is almost philosophical, you're arguing about market timing and positioning. Beta testing is operational, you're watching real people get stuck on a screen. Demand gen is almost a different job entirely. A good PM has to be comfortable being a beginner in each of those modes, over and over, on the same product.
+  </div>
+
+  <div class="voice">
+    <span class="voice-label">In my own words</span>
+    I also caught myself a few times assuming the PM owns more than they actually do. Marketing owns the campaign. Manufacturing owns packaging and logistics readiness. My job was connective tissue, making sure those teams had what they needed from the product side, not running their work for them.
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <p>Solar-R-Us case study — Coursera Product Management Specialization, Capstone Project. Company and product are fictional course material; documentation and analysis are my own work.</p>
+</footer>
+
+</body>
+</html>
